@@ -26,10 +26,62 @@ section, footer, header, aside, nav{
 /*-------------------------
   The menu
 --------------------------*/
+.appheader {
+  position: absolute;
+/*  top: 0;*/
+  width: 100%;
+  max-height: 3rem;
+
+}
+
+.pages-container {
+  position: absolute;
+  top: 3rem;
+  display: inline-block;
+
+}
+
+.control-panel {
+position: absolute;
+width: 25rem;
+height: 100%;
+display: inline-block;
+
+
+}
+
+.settings{
+ padding: 5px 0 0 0;
+
+font-size:16px;
+  font-weight:bold;
+  color:#7d9098;
+  padding-left: 1rem;
+background: #222;
+width: 24rem;
+}
+
+.response-panel {
+  position: absolute;
+left: 25rem;
+
+width: 40rem;
+height: 90%;
+
+margin: 0 0 0 5px;
+
+}
+
+.script-panel {
+position: absolute;
+left: 64rem;
+width: 40rem;;
+height: 100%;
+}
 
 nav{
-  display:inline-block;
-  margin:0px auto 10px;
+  /*display:inline-block;*/
+  margin:0px 0px 0 0;
   background-color:#222;
   box-shadow:0 1px 1px #ccc;
   border-radius:2px;
@@ -38,7 +90,7 @@ nav{
 
 nav a{
   display:inline-block;
-  padding: 14px 30px;
+  padding: 1rem 25px;
   color:#fff !important;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
@@ -66,30 +118,6 @@ nav.android .android{
   background-color:#2B678F;
 }
 
-.pages-container {
-left: 3%;
-}
-
-.controlpad {
-position: absolute;
-width: 25%;
-display: inline-block;
-}
-
-.settings{
-font-size:16px;
-  font-weight:bold;
-  color:#7d9098;
-  padding-left: 5px;
-
-}
-
-.responsepad {
-  position: absolute;
-left: 26rem;
-width: 74%;
-height: 100%;
-}
 
 p {
   font-size:16px;
@@ -110,14 +138,25 @@ p b{
 
 button {
 margin: 5px 0 0 5px;
+
 }
-#screenshot {
-padding: 10px 5px 0 10px;
-width: 320px;
-height: 480px;
+.actions {
+
+width: 25rem;
+background: #222;
+
 }
 
-.textbox {
+#screenshot {
+margin: 5px 0 0 0;
+width: 25rem;
+height: 40rem;
+background: rgba(180, 184, 192, 0.67);
+box-shadow: 0 0 10px #DDD inset;
+}
+
+.responsebox,.scriptbox {
+  /*padding: 5px 0;*/
   background: white;
   border: 1px solid #DDD;
   border-radius: 5px;
@@ -125,7 +164,7 @@ height: 480px;
   color: #666;
   outline: none;
   width:95%;
-  height:99%;
+  height:50rem;
 
  }
 

@@ -30,7 +30,7 @@ function ConfigController($scope, $http){
   $scope.setPlatform = function(active){
                   if (active=='android') {
                                   $scope.platformName = 'android';
-                                  $scope.appPath = '/Users/yi/Downloads/libon-android-client-3.0.1-qap-20140430.095235-20.apk';
+                                  $scope.appPath = '/home/yi/libon-android-client-3.0.1-qap-20140430.095235-20.apk';
                                   $scope.newCommandTimeout = '999999';
                      }
                   else if (active == 'ios') {
@@ -135,24 +135,24 @@ function ConfigController($scope, $http){
 
                       $http.get('http://localhost:4736/wd/hub/session').success(function(data){
 
-                        if (active=='android') {
+                        if ($scope.active=='android') {
                             $http.get('http://localhost:4736/wd/hub/session/'+data.sessionId+'/source').success(function(data, status, headers, config) {
                                 if (data.msg != '')
-                                {
-                                    $scope.msgs.push(angular.fromJson(data.value));
+                                { alert(data.value);
+                                    $scope.msgs.push(data.value);
                                 }
                                 else
                                 {
                                     $scope.errors.push(data.error);
                                 }
-                            }.error(function(data, status) { // called asynchronously if an error occurs
-        // or server returns response with an error status.
-                                $scope.errors.push(status);
-                            }));
+                            }).error(function(data, status) { // called asynchronously if an error occurs
+// // or server returns response with an error status.
+                        $scope.errors.push(status);
+                    });
                           }
 
 
-                        else if (active == 'ios') {
+                        else if ($scope.platformName = 'iOS') {
                             $http.post('http://localhost:4736/wd/hub/session/'+data.sessionId+'/execute',{"script":"UIATarget.localTarget().frontMostApp().windows()[0].getTree()","args":""}).success(function(data, status, headers, config) {
                                 if (data.msg != '')
                                 {

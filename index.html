@@ -15,73 +15,85 @@
   </head>
 <body>
         <div id="main" ng-app ng-controller="ConfigController" ng-click="hideTooltip()">
-            <nav class="{{active}}" ng-click="$event.preventDefault()">
+            <div class="appheader">
+                <nav class="{{active}}" ng-click="$event.preventDefault()">
 
-              <a href="#" class="ios" ng-click="setPlatform(active='ios')">iOS</a>
-              <a href="#" class="android" ng-click="setPlatform(active='android')">Android</a>
-            </nav>
+                  <a href="#" class="ios" ng-click="setPlatform(active='ios')">iOS</a>
+                  <a href="#" class="android" ng-click="setPlatform(active='android')">Android</a>
+                </nav>
+            </div>
 
-
-          <div class="pages-container">
-            <div class="controlpad">
+            <div class="pages-container">
+                <div class="control-panel">
                 <!-- This is the tooltip. It is shown only when the showtooltip variable is truthful -->
-                <div class="tooltip" ng-click="$event.stopPropagation()" ng-show="showtooltip">
-                    <div>
-                        <label>Platform Name:</label>
-                        <input type="text" ng-model="platformName" placeholder="android">
+                    <div class="tooltip" ng-click="$event.stopPropagation()" ng-show="showtooltip">
+                        <div>
+                            <label>Platform Name:</label>
+                            <input type="text" ng-model="platformName" placeholder="android">
+                        </div>
+                        <div>
+                            <label>App path:</label>
+                            <input type="text" ng-model="appPath" placeholder="/home/yi/libon-android-client-3.0.1-qap-20140430.095235-20.apk" >
+                        </div>
+                        <div>
+                            <label>Command Timeout:</label>
+                            <input type="text" ng-model="newCommandTimeout" placeholder="999999">
+                        </div>
                     </div>
-                    <div>
-                        <label>App path:</label>
-                        <input type="text" ng-model="appPath" placeholder="/Users/yi/Downloads/libon-android-client-3.0.1-qap-20140430.095235-20.apk" >
-                    </div>
-                    <div>
-                        <label>Command Timeout:</label>
-                        <input type="text" ng-model="newCommandTimeout" placeholder="999999">
+
+                    <p ng-click="toggleTooltip($event)">
+                      <!-- <div class="settings"> -->
+                        {{value}}: Click here to change the settings <br>
+                          Platform => {{active}};<br>
+                          App_Path => {{appPath}};<br>
+                          New Command Timeout => {{newCommandTimeout}}s
+                      <!-- </div> -->
+                    </p>
+
+                    <div class="actions">
+                        <button ng-click='createSession();'>Create Session</button>
+
+
+                        <button ng-click='getSession();'>Get current Session</button>
+
+                        <button ng-click='page();' >Get {{platformName}} screen resource</button>
+
+                        <!-- <button ng-click='source();' >Get android screen resource</button> -->
+
+                        <button ng-click='screenshot();' >Get screenshot</button>
+                        <br>
+
+                        <img id="screenshot" ng-src="{{ imgSrc }}" />
                     </div>
                 </div>
+                <div class="response-panel">
 
-                <p ng-click="toggleTooltip($event)">
-                  <div class="settings">
-                    {{value}}: <br>
-                      Platform => {{active}};<br>
-                      App_Path => {{appPath}};<br>
-                      New Command Timeout => {{newCommandTimeout}}s
+                  <div class="responsebox" >
+                   <!-- <div ng-repeat="msg in msgs"> {{ msg }} </div> -->
+
+                        <li class="err" ng-repeat="error in errors"> {{ error}} </li>
+
+                        <li class="info" ng-repeat="msg in msgs"> {{ msg }} </li>
+
+                        <li class="sid" ng-repeat="sid in sids"> {{ sid }} </li>
+
                   </div>
-                </p>
-
-                <div>
-                    <button ng-click='createSession();'>Create Session</button>
-
-
-                    <button ng-click='getSession();'>Get current Session</button>
-
-                    <button ng-click='source();' >Get {{platformName}} screen resource</button>
-
-                    <!-- <button ng-click='source();' >Get android screen resource</button> -->
-
-                    <button ng-click='screenshot();' >Get screenshot</button>
-                    <br>
-
-                    <img id="screenshot" ng-src="{{ imgSrc }}" />
                 </div>
-
-
+                <div class="script-panel">
+                  <div class="scriptbox" >
+                   <!-- <div ng-repeat="msg in msgs"> {{ msg }} </div> -->
+                <!--     <ul>
+                        <li class="err" ng-repeat="error in errors"> {{ error}} </li>
+                    </ul>
+                    <ul>
+                        <li class="info" ng-repeat="msg in msgs"> {{ msg }} </li>
+                    </ul>
+                    <ul>
+                        <li class="sid" ng-repeat="sid in sids"> {{ sid }} </li>
+                    </ul> -->
+                  </div>
+                </div>
             </div>
-            <div class="responsepad">
-              <input class="textbox" type="text" >
-               <div ng-repeat="msg in msgs"> {{ msg }} </div>
-            <!--     <ul>
-                    <li class="err" ng-repeat="error in errors"> {{ error}} </li>
-                </ul>
-                <ul>
-                    <li class="info" ng-repeat="msg in msgs"> {{ msg }} </li>
-                </ul>
-                <ul>
-                    <li class="sid" ng-repeat="sid in sids"> {{ sid }} </li>
-                </ul> -->
-              </input>
-            </div>
-          </div>
 
         </div>
 
