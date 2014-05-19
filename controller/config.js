@@ -1,28 +1,18 @@
 // The controller is a regular JavaScript function. It is called
 // once when AngularJS runs into the ng-controller declaration.
 
-function ConfigController($scope){
+function ConfigController($scope, $http){
 
   // $scope is a special object that makes
   // its properties available to the view as
   // variables. Here we set some default values:
 
   $scope.showtooltip = false;
-  $scope.value = 'Configuration';
-
-  // if ($scope.active='android') {
-  //         // $scope.platformName = 'android';
-  //         $scope.appPath = '/Users/yi/Downloads/libon-android-client-3.0.1-qap-20140430.095235-20.apk';
-  //         $scope.newCommandTimeout = '999999';
-  //      }
-  // else if($scope.active == 'ios'){
-  //         // $scope.platformName = 'iOS';
-  //         $scope.appPath = '/Users/yi/Downloads/libon.app';
-  //         $scope.newCommandTimeout = '999999';
-  //      }
-
-  // Some helper functions that will be
-  // available in the angular declarations
+  $scope.value = 'Settings';
+  $scope.errors = [];
+  $scope.msgs = [];
+  $scope.sids = [];
+  $scope.imageSource = '/tmp/current_screen.png';
 
   $scope.hideTooltip = function(){
 
@@ -38,17 +28,200 @@ function ConfigController($scope){
   }
 
   $scope.setPlatform = function(active){
+                  if (active=='android') {
+                                  $scope.platformName = 'android';
+                                  $scope.appPath = '/Users/yi/Downloads/libon-android-client-3.0.1-qap-20140430.095235-20.apk';
+                                  $scope.newCommandTimeout = '999999';
+                     }
+                  else if (active == 'ios') {
+                                  $scope.platformName = 'iOS';
+                                  $scope.appPath = '/Users/yi/Downloads/libon.app';
+                                  $scope.newCommandTimeout = '999999';
+                     }
+  }
 
-    if (active=='android') {
-          $scope.platformName = 'android';
-          $scope.appPath = '/Users/yi/Downloads/libon-android-client-3.0.1-qap-20140430.095235-20.apk';
-          $scope.newCommandTimeout = '999999';
-       }
-   else if(active == 'ios'){
-          $scope.platformName = 'iOS';
-          $scope.appPath = '/Users/yi/Downloads/libon.app';
-          $scope.newCommandTimeout = '999999';
-       }
+  function hpost(url, params) {
+                    $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+                    $scope.msgs.splice(0, $scope.msgs.length);
+                    $scope.sids.splice(0, $scope.sids.length);
+                    $http.post(url, params).success(function(data, status, headers, config) {
+                        if (data.msg != '')
+                        {
+                            $scope.msgs.push(data);
+                        }
+                        else
+                        {
+                            $scope.errors.push(data.error);
+                        }
+                    }).error(function(data, status) { // called asynchronously if an error occurs
+// or server returns response with an error status.
+                        $scope.errors.push(status);
+                    });
 
   }
+
+  function hget(url, params) {
+                    $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+                    $scope.msgs.splice(0, $scope.msgs.length);
+                    $scope.sids.splice(0, $scope.sids.length);
+                    $http.get(url, params).success(function(data, status, headers, config) {
+                        if (data.msg != '')
+                        {
+                            $scope.msgs.push(data);
+                        }
+                        else
+                        {
+                            $scope.errors.push(data.error);
+                        }
+                    }).error(function(data, status) { // called asynchronously if an error occurs
+// or server returns response with an error status.
+                        $scope.errors.push(status);
+                    });
+
+  }
+
+  $scope.createSession = function() {
+
+                       hpost('http://localhost:4736/wd/hub/session', {'desiredCapabilities': { 'platformName': $scope.platformName, 'app': $scope.appPath, 'newCommandTimeout': $scope.newCommandTimeout}})
+
+//                     $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+//                     $scope.msgs.splice(0, $scope.msgs.length);
+//                     $scope.sids.splice(0, $scope.sids.length);
+
+//                     $http.post('http://localhost:4736/wd/hub/session', {'desiredCapabilities': { 'platformName': $scope.platformName, 'app': $scope.appPath, 'newCommandTimeout': $scope.newCommandTimeout}}
+//                     ).success(function(data, status, headers, config) {
+//                         if (data.msg != '')
+//                         {
+//                             $scope.msgs.push(data);
+//                         }
+//                         else
+//                         {
+//                             $scope.errors.push(data.error);
+//                         }
+//                     }).error(function(data, status) { // called asynchronously if an error occurs
+// // or server returns response with an error status.
+//                         $scope.errors.push(status);
+//                     });
+                }
+
+  $scope.getSession = function() {
+                       hget('http://localhost:4736/wd/hub/session','')
+//                     $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+//                     $scope.msgs.splice(0, $scope.msgs.length);
+//                     $scope.sids.splice(0, $scope.sids.length);
+//                     $http.get('http://localhost:4736/wd/hub/session').success(function(data, status, headers, config) {
+
+
+//                         if (data.msg != '')
+//                         {
+//                             $scope.msgs.push("Response:", data);
+//                             $scope.sids.push("Session_id:", data.sessionId);
+//                         }
+//                         else
+//                         {
+//                             $scope.errors.push(data.error);
+//                         }
+//                     }).error(function(data, status) { // called asynchronously if an error occurs
+// // or server returns response with an error status.
+//                         $scope.errors.push(status);
+//                     });
+                }
+
+  $scope.page = function() {
+
+                    $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+                    $scope.msgs.splice(0, $scope.msgs.length);
+                    $scope.sids.splice(0, $scope.sids.length);
+
+                      $http.get('http://localhost:4736/wd/hub/session').success(function(data){
+
+                        if (active=='android') {
+                            $http.get('http://localhost:4736/wd/hub/session/'+data.sessionId+'/source').success(function(data, status, headers, config) {
+                                if (data.msg != '')
+                                {
+                                    $scope.msgs.push(angular.fromJson(data.value));
+                                }
+                                else
+                                {
+                                    $scope.errors.push(data.error);
+                                }
+                            }.error(function(data, status) { // called asynchronously if an error occurs
+        // or server returns response with an error status.
+                                $scope.errors.push(status);
+                            }));
+                          }
+
+
+                        else if (active == 'ios') {
+                            $http.post('http://localhost:4736/wd/hub/session/'+data.sessionId+'/execute',{"script":"UIATarget.localTarget().frontMostApp().windows()[0].getTree()","args":""}).success(function(data, status, headers, config) {
+                                if (data.msg != '')
+                                {
+                                    $scope.msgs.push(angular.fromJson(data.value));
+                                }
+                                else
+                                {
+                                    $scope.errors.push(data.error);
+                                }
+                            }).error(function(data, status) { // called asynchronously if an error occurs
+        // or server returns response with an error status.
+                                $scope.errors.push(status);
+                            });
+                          }
+
+                });
+            }
+
+  $scope.source = function() {
+
+                    $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+                    $scope.msgs.splice(0, $scope.msgs.length);
+                    $scope.sids.splice(0, $scope.sids.length);
+
+                      $http.get('http://localhost:4736/wd/hub/session').success(function(data){
+
+
+                           $http.get('http://localhost:4736/wd/hub/session/'+data.sessionId+'/source').success(function(data, status, headers, config) {
+
+                                if (data.msg != '')
+                                {
+                                    $scope.msgs.push(data);
+                                }
+                                else
+                                {
+                                    $scope.errors.push(data.error);
+                                }
+                            }).error(function(data, status) { // called asynchronously if an error occurs
+        // or server returns response with an error status.
+                                $scope.errors.push(status);
+                            });
+
+                });
+            }
+  $scope.screenshot = function() {
+
+                    $scope.errors.splice(0, $scope.errors.length); // remove all error messages
+                    $scope.msgs.splice(0, $scope.msgs.length);
+                    $scope.sids.splice(0, $scope.sids.length);
+
+                      $http.get('http://localhost:4736/wd/hub/session').success(function(data){
+                           $http.get('http://localhost:4736/wd/hub/session/'+data.sessionId+'/screenshot').success(function(data, status, headers, config) {
+
+                                 $scope.imgSrc = "data:image/png;base64,"+data.value;
+
+
+                                // if (data.msg != '')
+                                // {
+                                //     $scope.msgs.push(data);
+                                // }
+                                // else
+                                // {
+                                //     $scope.errors.push(data.error);
+                                // }
+                            }).error(function(data, status) { // called asynchronously if an error occurs
+        // or server returns response with an error status.
+                                $scope.errors.push(status);
+                            });
+                      });
+
+            }
 }
