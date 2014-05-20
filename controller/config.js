@@ -13,6 +13,9 @@ function ConfigController($scope, $http){
   $scope.msgs = [];
   $scope.sids = [];
   $scope.imageSource = '/tmp/current_screen.png';
+  var x2js = new X2JS();
+  var datajson = null;
+  var jsonPretty = null;
 
   $scope.hideTooltip = function(){
 
@@ -61,13 +64,16 @@ function ConfigController($scope, $http){
   }
 
   function hget(url, params) {
+
                     $scope.errors.splice(0, $scope.errors.length); // remove all error messages
                     $scope.msgs.splice(0, $scope.msgs.length);
                     $scope.sids.splice(0, $scope.sids.length);
                     $http.get(url, params).success(function(data, status, headers, config) {
                         if (data.msg != '')
                         {
-                            $scope.msgs.push(data);
+                          datajson = angular.fromJson(data);
+                          jsonPretty = JSON.stringify(datajson,null,6);
+                          $scope.ResponseValue=jsonPretty;
                         }
                         else
                         {
@@ -138,8 +144,11 @@ function ConfigController($scope, $http){
                         if ($scope.active=='android') {
                             $http.get('http://localhost:4736/wd/hub/session/'+data.sessionId+'/source').success(function(data, status, headers, config) {
                                 if (data.msg != '')
-                                { alert(data.value);
-                                    $scope.msgs.push(data.value);
+                                 {
+                                   datajson = x2js.xml_str2json(data.value);
+                                   jsonPretty = JSON.stringify(datajson,null,6);
+                                   $scope.ResponseValue=jsonPretty;
+                                    // $scope.msgs.push(jsonPretty);
                                 }
                                 else
                                 {
@@ -156,7 +165,10 @@ function ConfigController($scope, $http){
                             $http.post('http://localhost:4736/wd/hub/session/'+data.sessionId+'/execute',{"script":"UIATarget.localTarget().frontMostApp().windows()[0].getTree()","args":""}).success(function(data, status, headers, config) {
                                 if (data.msg != '')
                                 {
-                                    $scope.msgs.push(angular.fromJson(data.value));
+                                    datajson = data.value;
+                                    jsonPretty = JSON.stringify(datajson,null,6);
+                                    $scope.ResponseValue=jsonPretty;
+                                    // $scope.msgs.push(angular.fromJson(data.value));
                                 }
                                 else
                                 {
@@ -222,6 +234,12 @@ function ConfigController($scope, $http){
                                 $scope.errors.push(status);
                             });
                       });
+
+            }
+
+  $scope.singleClick = function(event) {
+                    alert(event.offsetX);
+                    alert(event.offsetY);
 
             }
 }

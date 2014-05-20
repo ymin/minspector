@@ -8,13 +8,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/config.css">
+    <!-- <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css"> -->
 
-    <script src="./angularjs/angular.min.js"></script>
+    <script src="./js/angular.min.js"></script>
     <script src="./controller/config.js"></script>
+    <script src="./js/xml2json.min.js"></script>
+
 
   </head>
 <body>
-        <div id="main" ng-app ng-controller="ConfigController" ng-click="hideTooltip()">
+        <div id="main" ng-app ="app" ng-controller="ConfigController" ng-click="hideTooltip()">
             <div class="appheader">
                 <nav class="{{active}}" ng-click="$event.preventDefault()">
 
@@ -63,19 +66,23 @@
                         <button ng-click='screenshot();' >Get screenshot</button>
                         <br>
 
-                        <img id="screenshot" ng-src="{{ imgSrc }}" />
+
                     </div>
+                     <img id="screenshot" ng-src="{{ imgSrc }}" ng-click="singleClick($event)"/>
                 </div>
+
                 <div class="response-panel">
 
                   <div class="responsebox" >
                    <!-- <div ng-repeat="msg in msgs"> {{ msg }} </div> -->
+                   <textarea json-text ng-model='ResponseValue'></textarea>
+                   <pre>{{StringValue}}</pre>
 
-                        <li class="err" ng-repeat="error in errors"> {{ error}} </li>
+                       <!--  <li class="err" ng-repeat="error in errors"> {{ error}} </li>
 
                         <li class="info" ng-repeat="msg in msgs"> {{ msg }} </li>
 
-                        <li class="sid" ng-repeat="sid in sids"> {{ sid }} </li>
+                        <li class="sid" ng-repeat="sid in sids"> {{ sid }} </li> -->
 
                   </div>
                 </div>

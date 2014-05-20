@@ -148,11 +148,14 @@ background: #222;
 }
 
 #screenshot {
+top:100px;
 margin: 5px 0 0 0;
 width: 25rem;
-height: 40rem;
+height: 42rem;
 background: rgba(180, 184, 192, 0.67);
 box-shadow: 0 0 10px #DDD inset;
+
+
 }
 
 .responsebox,.scriptbox {
@@ -165,7 +168,28 @@ box-shadow: 0 0 10px #DDD inset;
   outline: none;
   width:95%;
   height:50rem;
-
  }
 
-
+textarea {
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing:border-box;
+  moz-box-sizing:border-box;
+  -webkit-appearance: textarea;
+  background-color: white;
+  border: 1px solid;
+  border-image-source: initial;
+  border-image-slice: initial;
+  border-image-width: initial;
+  border-image-outset: initial;
+  border-image-repeat: initial;
+  -webkit-rtl-ordering: logical;
+  -webkit-user-select: text;
+  flex-direction: column;
+  resize: auto;
+  cursor: auto;
+  padding: 2px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
